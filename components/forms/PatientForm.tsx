@@ -8,6 +8,8 @@ import CustomFormField from "@/components/CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { UserFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
+import { createUser } from "@/lib/actions/patient.actions";
+import { Button } from "@/components/ui/button";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -34,14 +36,12 @@ const PatientForm = () => {
 
   async function onSubmit({ name, email, phone}: z.infer<typeof UserFormValidation>) {
     setIsLoading(true);
-
     try {
-      // const userData = { name, email, phone}
+      const userData = { name, email, phone}
 
-      // const user = await createUser(userData);
+      const user = await createUser(userData);
 
-      // if(user) router.push(`/patients/${user.id}/register`);
-      
+      if(user) router.push(`/patients/${user.$id}/register`);
     } catch (error) {
       console.error(error);
     }
@@ -80,11 +80,9 @@ const PatientForm = () => {
           name="phone"
           label="Phone Number"
           placeholder="(444) 444-4444"
-          iconSrc="/assets/icons/email.svg"
-          iconAlt="Email Icon"
         />
+        <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
       </form>
-      <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
     </Form>
   );
 };
